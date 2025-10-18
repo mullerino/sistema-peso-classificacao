@@ -1,3 +1,12 @@
-idf_component_register(SRCS "main.c"
-                       PRIV_REQUIRES spi_flash
-                       INCLUDE_DIRS "")
+idf_component_register(
+  SRCS
+    "main.c"
+    "drivers/rtc_ds3231.c"
+  INCLUDE_DIRS
+    "."
+    "drivers"
+  REQUIRES
+    driver
+    esp_timer
+    freertos
+)
