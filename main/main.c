@@ -2,28 +2,32 @@
 #include <time.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
+#include "tasks/task_registro.h"
 #include "esp_log.h"
-#include "drivers/rtc_ds3231.h"
 
 void app_main(void)
 {
-  rtc_ds3231_init();
+  queue_pedido_hora = xQueueCreate(5, sizeof(PedidoHora));
+
+  xTaskCreate(task_registro, "TaskRegistro", 4096, NULL, 5, NULL);
 
   while (1)
   {
-    struct tm timeinfo;
+    PedidoHora pedido = {
+        .id_mensagem = 1,
+        .respostaQueue = xQueueCreate(1, sizeof(RespostaHora))};
 
-    if (rtc_ds3231_get_time(&timeinfo) == ESP_OK)
+    xQueueSend(queue_pedido_hora, &pedido, portMAX_DELAY);
+
+    RespostaHora resposta;
+    if (xQueueReceive(pedido.respostaQueue, &resposta, pdMS_TO_TICKS(2000)))
     {
       char buffer[64];
-      strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
-      ESP_LOGI("APP_MAIN", "Hora atual: %s", buffer);
-    }
-    else
-    {
-      ESP_LOGE("APP_MAIN", "Falha ao ler RTC");
+      strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &resposta.hora);
+      ESP_LOGI("APP_MAIN", "Hora recebida: %s", buffer);
     }
 
-    vTaskDelay(pdMS_TO_TICKS(3000));
+    vTaskDelay(pdMS_TO_TICKS(5000));
   }
 }
