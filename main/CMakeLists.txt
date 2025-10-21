@@ -2,6 +2,7 @@ idf_component_register(
   SRCS
     "main.c"
     "drivers/rtc_ds3231.c"
+    "tasks/task_registro.c"
   INCLUDE_DIRS
     "."
     "drivers"
