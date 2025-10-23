@@ -3,6 +3,7 @@ idf_component_register(
     "main.c"
     "drivers/rtc_ds3231.c"
     "tasks/task_registro.c"
+    "tasks/task_feedback.c"
   INCLUDE_DIRS
     "."
     "drivers"
