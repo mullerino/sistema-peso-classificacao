@@ -28,3 +28,6 @@ install_manifest.txt
 
 *.exe
 *.out
+
+# Componentes gerenciados pelo esp-idf
+/managed_components/
