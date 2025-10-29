@@ -4,6 +4,7 @@ idf_component_register(
     "drivers/rtc_ds3231.c"
     "tasks/task_registro.c"
     "tasks/task_feedback.c"
+    "tasks/task_leitura_peso.c"
   INCLUDE_DIRS
     "."
     "drivers"
