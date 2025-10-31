@@ -21,14 +21,14 @@ void task_feedback(void *pvParameters)
       case FEEDBACK_APROVADO:
         led_set_color(LED_GREEN);
         buzzer_beep(2000, 100);
-        vTaskDelay(pdMS_TO_TICKS(200));
+        vTaskDelay(pdMS_TO_TICKS(5000));
         led_set_color(LED_OFF);
         break;
 
       case FEEDBACK_REPROVADO:
-        led_set_color(LED_RED);
+        led_set_color(LED_BLUE);
         buzzer_beep(1000, 400);
-        vTaskDelay(pdMS_TO_TICKS(400));
+        vTaskDelay(pdMS_TO_TICKS(5000));
         led_set_color(LED_OFF);
         break;
 

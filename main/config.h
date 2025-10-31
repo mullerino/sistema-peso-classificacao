@@ -7,6 +7,6 @@
 #define DS3231_ADDR 0x68
 
 #define GPIO_LED_R 04
-#define GPIO_LED_G 13
-#define GPIO_LED_B 14
+#define GPIO_LED_G 14
+#define GPIO_LED_B 13
 #define GPIO_BUZZER 27

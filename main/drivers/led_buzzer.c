@@ -6,44 +6,53 @@
 
 static const char *TAG = "LED_BUZZER";
 
-#define LEDC_MODE LEDC_LOW_SPEED_MODE
-#define LEDC_TIMER LEDC_TIMER_0
-#define LEDC_DUTY_RES LEDC_TIMER_8_BIT // 0–255
-#define LEDC_FREQUENCY 5000            // 5 kHz base
+#define LEDC_MODE_LED LEDC_LOW_SPEED_MODE
+#define LEDC_TIMER_LED LEDC_TIMER_0
+#define LEDC_DUTY_RES_LED LEDC_TIMER_8_BIT
+#define LEDC_FREQUENCY_LED 5000
 
 esp_err_t led_buzzer_init(void)
 {
   ledc_timer_config_t led_timer = {
-      .speed_mode = LEDC_MODE,
-      .timer_num = LEDC_TIMER,
-      .duty_resolution = LEDC_DUTY_RES,
-      .freq_hz = LEDC_FREQUENCY,
+      .speed_mode = LEDC_MODE_LED,
+      .timer_num = LEDC_TIMER_LED,
+      .duty_resolution = LEDC_DUTY_RES_LED,
+      .freq_hz = LEDC_FREQUENCY_LED,
       .clk_cfg = LEDC_AUTO_CLK,
   };
   ESP_ERROR_CHECK(ledc_timer_config(&led_timer));
 
+  gpio_config_t buzzer_gpio = {
+      .pin_bit_mask = (1ULL << GPIO_BUZZER),
+      .mode = GPIO_MODE_OUTPUT,
+      .pull_up_en = GPIO_PULLUP_DISABLE,
+      .pull_down_en = GPIO_PULLDOWN_DISABLE,
+      .intr_type = GPIO_INTR_DISABLE};
+  gpio_config(&buzzer_gpio);
+
   ledc_channel_config_t channels[] = {
-      {.gpio_num = GPIO_LED_R, .speed_mode = LEDC_MODE, .channel = LEDC_CHANNEL_0, .timer_sel = LEDC_TIMER, .duty = 0},
-      {.gpio_num = GPIO_LED_G, .speed_mode = LEDC_MODE, .channel = LEDC_CHANNEL_1, .timer_sel = LEDC_TIMER, .duty = 0},
-      {.gpio_num = GPIO_LED_B, .speed_mode = LEDC_MODE, .channel = LEDC_CHANNEL_2, .timer_sel = LEDC_TIMER, .duty = 0},
-      {.gpio_num = GPIO_BUZZER, .speed_mode = LEDC_MODE, .channel = LEDC_CHANNEL_3, .timer_sel = LEDC_TIMER, .duty = 0},
+      {.gpio_num = GPIO_LED_R, .speed_mode = LEDC_MODE_LED, .channel = LEDC_CHANNEL_0, .timer_sel = LEDC_TIMER_LED, .duty = 0},
+      {.gpio_num = GPIO_LED_G, .speed_mode = LEDC_MODE_LED, .channel = LEDC_CHANNEL_1, .timer_sel = LEDC_TIMER_LED, .duty = 0},
+      {.gpio_num = GPIO_LED_B, .speed_mode = LEDC_MODE_LED, .channel = LEDC_CHANNEL_2, .timer_sel = LEDC_TIMER_LED, .duty = 0},
   };
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 3; i++)
     ESP_ERROR_CHECK(ledc_channel_config(&channels[i]));
 
   ESP_LOGI(TAG, "LED RGB e Buzzer inicializados");
   return ESP_OK;
 }
 
-static void led_apply_duty(uint32_t r, uint32_t g, uint32_t b)
+void led_apply_duty(uint32_t r, uint32_t g, uint32_t b)
 {
-  ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_0, r);
-  ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_0);
-  ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_1, g);
-  ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_1);
-  ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_2, b);
-  ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_2);
+  ledc_set_duty(LEDC_MODE_LED, LEDC_CHANNEL_0, r);
+  ledc_update_duty(LEDC_MODE_LED, LEDC_CHANNEL_0);
+
+  ledc_set_duty(LEDC_MODE_LED, LEDC_CHANNEL_1, g);
+  ledc_update_duty(LEDC_MODE_LED, LEDC_CHANNEL_1);
+
+  ledc_set_duty(LEDC_MODE_LED, LEDC_CHANNEL_2, b);
+  ledc_update_duty(LEDC_MODE_LED, LEDC_CHANNEL_2);
 }
 
 void led_set_color(led_color_t color)
@@ -80,12 +89,7 @@ void led_set_color(led_color_t color)
 
 void buzzer_beep(uint16_t freq_hz, uint16_t duration_ms)
 {
-  ledc_set_freq(LEDC_MODE, LEDC_TIMER, freq_hz);
-  ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_3, 180);
-  ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_3);
-
+  gpio_set_level(GPIO_BUZZER, 1);
   vTaskDelay(pdMS_TO_TICKS(duration_ms));
-
-  ledc_set_duty(LEDC_MODE, LEDC_CHANNEL_3, 0);
-  ledc_update_duty(LEDC_MODE, LEDC_CHANNEL_3);
+  gpio_set_level(GPIO_BUZZER, 0);
 }
