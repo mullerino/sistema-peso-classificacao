@@ -3,6 +3,7 @@ idf_component_register(
     "main.c"
     "drivers/rtc_ds3231.c"
     "drivers/led_buzzer.c"
+    "drivers/hx711_driver.c"
     "tasks/task_registro.c"
     "tasks/task_feedback.c"
     "tasks/task_leitura_peso.c"
@@ -13,4 +14,5 @@ idf_component_register(
     driver
     esp_timer
     freertos
+    hx711
 )
