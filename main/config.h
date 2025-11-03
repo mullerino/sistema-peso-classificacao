@@ -1,7 +1,10 @@
 #pragma once
 
-#define I2C_MASTER_SDA_IO 21
-#define I2C_MASTER_SCL_IO 22
+#define IR_ENTRADA 25
+#define IR_SAIDA 26
+
+#define I2C_MASTER_SDA_IO 26
+#define I2C_MASTER_SCL_IO 27
 #define I2C_MASTER_NUM I2C_NUM_0
 #define I2C_MASTER_FREQ_HZ 100000
 #define DS3231_ADDR 0x68
