@@ -8,7 +8,7 @@ QueueHandle_t queue_peso = NULL;
 void task_leitura_peso(void *pvParameters)
 {
   hx711_driver_init();
-  hx711_driver_set_calibration(210.5f, 0); // valores a ajustar
+  hx711_driver_set_calibration(210.5f, 195437); // valores a ajustar
 
   ESP_LOGI(TAG, "TaskLeituraPeso iniciada");
 

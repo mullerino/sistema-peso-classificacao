@@ -55,6 +55,6 @@ float hx711_driver_read(void)
   }
 
   // Converte para gramas com fator de calibração
-  float weight = ((float)(raw - offset)) / scale_factor;
+  float weight = -((float)(raw - offset)) / scale_factor;
   return weight;
 }
