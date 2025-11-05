@@ -1,40 +1,39 @@
 #include "task_deteccao.h"
-#include "ir_sensor.h"
+#include "driver/gpio.h"
 #include "esp_log.h"
 
 static const char *TAG = "TaskDeteccao";
-QueueHandle_t queue_deteccao = NULL;
+extern SemaphoreHandle_t sem_item_detectado;
+
+#define GPIO_BOTAO GPIO_NUM_0
 
 void task_deteccao(void *pvParameters)
 {
-  ir_sensor_init();
-  ESP_LOGI(TAG, "TaskDeteccao iniciada");
+  ESP_LOGI(TAG, "TaskDeteccao iniciada (usando GPIO%d como botão)", GPIO_BOTAO);
 
-  bool estadoEntradaAnt = false;
-  bool estadoSaidaAnt = false;
+  gpio_config_t io_conf = {
+      .pin_bit_mask = 1ULL << GPIO_BOTAO,
+      .mode = GPIO_MODE_INPUT,
+      .pull_up_en = GPIO_PULLUP_ENABLE,
+      .pull_down_en = GPIO_PULLDOWN_DISABLE,
+      .intr_type = GPIO_INTR_DISABLE,
+  };
+  gpio_config(&io_conf);
+
+  int estado_anterior = 1;
 
   while (1)
   {
-    bool entrada = ir_sensor_is_triggered(IR_SENSOR_ENTRADA);
-    bool saida = ir_sensor_is_triggered(IR_SENSOR_SAIDA);
+    int estado = gpio_get_level(GPIO_BOTAO);
 
-    if (entrada && !estadoEntradaAnt)
+    if (estado == 0 && estado_anterior == 1)
     {
-      EventoDeteccao ev = OBJETO_ENTROU;
-      xQueueSend(queue_deteccao, &ev, 0);
-      ESP_LOGI(TAG, "Objeto detectado na ENTRADA");
+      ESP_LOGI(TAG, "Botão pressionado → simulando detecção");
+      xSemaphoreGive(sem_item_detectado);
+      vTaskDelay(pdMS_TO_TICKS(500));
     }
 
-    if (saida && !estadoSaidaAnt)
-    {
-      EventoDeteccao ev = OBJETO_SAIU;
-      xQueueSend(queue_deteccao, &ev, 0);
-      ESP_LOGI(TAG, "Objeto detectado na SAÍDA");
-    }
-
-    estadoEntradaAnt = entrada;
-    estadoSaidaAnt = saida;
-
-    vTaskDelay(pdMS_TO_TICKS(100));
+    estado_anterior = estado;
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
