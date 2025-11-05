@@ -6,6 +6,7 @@ idf_component_register(
     "drivers/hx711_driver.c"
     "drivers/ir_sensor.c"
     "tasks/task_deteccao.c"
+    "tasks/task_classificacao.c"
     "tasks/task_registro.c"
     "tasks/task_feedback.c"
     "tasks/task_leitura_peso.c"
