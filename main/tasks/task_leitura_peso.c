@@ -14,15 +14,18 @@ void task_leitura_peso(void *pvParameters)
 
   while (1)
   {
-    PesoMedido medida;
-    medida.peso = hx711_driver_read();
-
-    if (medida.peso != 0)
+    if (xSemaphoreTake(sem_item_detectado, portMAX_DELAY))
     {
-      xQueueSend(queue_peso, &medida, 0);
-      ESP_LOGI(TAG, "Peso: %.2f g", medida.peso);
-    }
+      PesoMedido medida;
+      medida.peso = hx711_driver_read();
 
-    vTaskDelay(pdMS_TO_TICKS(1000));
+      if (medida.peso != 0)
+      {
+        xQueueSend(queue_peso, &medida, 0);
+        ESP_LOGI(TAG, "Peso: %.2f g", medida.peso);
+      }
+
+      vTaskDelay(pdMS_TO_TICKS(300));
+    }
   }
 }
