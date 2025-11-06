@@ -31,8 +31,6 @@ void task_deteccao(void *pvParameters)
     {
       ESP_LOGI(TAG, "Botão pressionado → simulando detecção");
 
-      spiffs_manager_read_file("/spiffs/registros.csv");
-
       xSemaphoreGive(sem_item_detectado);
       vTaskDelay(pdMS_TO_TICKS(500));
     }
