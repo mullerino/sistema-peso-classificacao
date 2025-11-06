@@ -1,4 +1,5 @@
 #include "task_classificacao.h"
+#include "drivers/spiffs_manager.h"
 #include "task_registro.h"
 #include "esp_log.h"
 
@@ -48,6 +49,12 @@ void task_classificacao(void *pvParameters)
       {
         char buffer[32];
         strftime(buffer, sizeof(buffer), "%H:%M:%S", &resposta.hora);
+
+        spiffs_manager_save_event(
+            buffer,
+            medida.peso,
+            feedback == FEEDBACK_APROVADO ? "APROVADO" : "REPROVADO");
+
         ESP_LOGI("TaskClassificacao", "Evento registrado às %s (%.2f g - %s)",
                  buffer,
                  medida.peso,
