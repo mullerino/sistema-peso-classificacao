@@ -1,4 +1,5 @@
 #include "task_deteccao.h"
+#include "spiffs_manager.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
 
@@ -29,6 +30,7 @@ void task_deteccao(void *pvParameters)
     if (estado == 0 && estado_anterior == 1)
     {
       ESP_LOGI(TAG, "Botão pressionado → simulando detecção");
+
       xSemaphoreGive(sem_item_detectado);
       vTaskDelay(pdMS_TO_TICKS(500));
     }

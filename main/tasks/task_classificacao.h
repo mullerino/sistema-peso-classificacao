@@ -4,6 +4,7 @@
 #include "esp_err.h"
 #include "task_leitura_peso.h"
 #include "task_feedback.h"
+#include "drivers/spiffs_manager.h"
 
 extern QueueHandle_t queue_peso;
 extern QueueHandle_t queue_feedback;
