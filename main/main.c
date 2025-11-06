@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include "drivers/spiffs_manager.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "tasks/task_deteccao.h"
@@ -17,6 +18,12 @@ void app_main(void)
 {
   ESP_LOGI(TAG, "Inicializando sistema de verificação e classificação de peso...");
 
+  esp_err_t ret = spiffs_manager_init();
+  if (ret != ESP_OK)
+  {
+    ESP_LOGE(TAG, "Falha ao montar SPIFFS. Continuando sem armazenamento local.");
+  }
+
   queue_peso = xQueueCreate(5, sizeof(PesoMedido));
   queue_pedido_hora = xQueueCreate(5, sizeof(PedidoHora));
   queue_feedback = xQueueCreate(5, sizeof(feedback_event_t));
@@ -25,7 +32,7 @@ void app_main(void)
 
   xTaskCreate(task_deteccao, "TaskDeteccao", 4096, NULL, 5, NULL);
   xTaskCreate(task_leitura_peso, "TaskLeituraPeso", 4096, NULL, 5, NULL);
+  xTaskCreate(task_classificacao, "TaskClassificacao", 4096, NULL, 6, NULL);
   xTaskCreate(task_registro, "TaskRegistro", 4096, NULL, 4, NULL);
   xTaskCreate(task_feedback, "TaskFeedback", 4096, NULL, 3, NULL);
-  xTaskCreate(task_classificacao, "TaskClassificacao", 4096, NULL, 6, NULL);
 }
