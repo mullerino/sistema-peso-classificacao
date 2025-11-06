@@ -47,21 +47,16 @@ void task_classificacao(void *pvParameters)
       RespostaHora resposta;
       if (xQueueReceive(pedido.respostaQueue, &resposta, pdMS_TO_TICKS(2000)))
       {
-        char buffer[32];
-        strftime(buffer, sizeof(buffer), "%H:%M:%S", &resposta.hora);
+        char buffer[64];
+        strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &resposta.hora);
 
         spiffs_manager_save_event(
             buffer,
             medida.peso,
             feedback == FEEDBACK_APROVADO ? "APROVADO" : "REPROVADO");
-
-        ESP_LOGI("TaskClassificacao", "Evento registrado às %s (%.2f g - %s)",
-                 buffer,
-                 medida.peso,
-                 feedback == FEEDBACK_APROVADO ? "APROVADO" : "REPROVADO");
       }
-    }
 
-    vTaskDelay(pdMS_TO_TICKS(100));
+      vTaskDelay(pdMS_TO_TICKS(100));
+    }
   }
 }

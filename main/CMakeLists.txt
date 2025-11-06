@@ -5,6 +5,7 @@ idf_component_register(
     "drivers/led_buzzer.c"
     "drivers/hx711_driver.c"
     "drivers/ir_sensor.c"
+    "drivers/spiffs_manager.c"
     "tasks/task_deteccao.c"
     "tasks/task_classificacao.c"
     "tasks/task_registro.c"
@@ -17,5 +18,6 @@ idf_component_register(
     driver
     esp_timer
     freertos
+    spiffs
     hx711
 )
