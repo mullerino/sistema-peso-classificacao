@@ -9,4 +9,4 @@ typedef enum
 } ir_sensor_id_t;
 
 esp_err_t ir_sensor_init(void);
-bool ir_sensor_is_triggered(ir_sensor_id_t sensor);
+bool ir_sensor_is_triggered(void);
