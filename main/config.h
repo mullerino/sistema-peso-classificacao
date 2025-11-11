@@ -1,7 +1,6 @@
 #pragma once
 
-#define IR_ENTRADA 25
-#define IR_SAIDA 26
+#define IR_SENSOR_PIN 32
 
 #define I2C_MASTER_SDA_IO 18
 #define I2C_MASTER_SCL_IO 19
