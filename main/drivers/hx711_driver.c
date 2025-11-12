@@ -40,7 +40,9 @@ float hx711_driver_read(void)
 {
   int32_t raw;
 
-  // Aguarda dado disponível
+  // hx711_read_average(&hx, 5, &raw);
+  // ESP_LOGI("CALIBRACAO", "Offset real (sem carga): %ld", raw);
+
   if (hx711_wait(&hx, 1000) != ESP_OK)
   {
     ESP_LOGW(TAG, "Timeout aguardando dado HX711");
