@@ -13,10 +13,10 @@ esp_err_t hx711_driver_init(void)
   // Configura estrutura de pinos e ganho
   hx.dout = HX711_DOUT;
   hx.pd_sck = HX711_SCK;
-  hx.gain = HX711_GAIN_A_128; // Canal A, ganho 128
+  hx.gain = HX711_GAIN_A_128;
 
-  // Inicializa o driver
   esp_err_t ret = hx711_init(&hx);
+
   if (ret != ESP_OK)
   {
     ESP_LOGE(TAG, "Falha ao inicializar HX711");
@@ -47,14 +47,13 @@ float hx711_driver_read(void)
     return 0;
   }
 
-  // Lê a média de 5 leituras para maior estabilidade
-  if (hx711_read_average(&hx, 5, &raw) != ESP_OK)
+  if (hx711_read_average(&hx, 10, &raw) != ESP_OK)
   {
     ESP_LOGW(TAG, "Erro ao ler HX711");
     return 0;
   }
 
-  // Converte para gramas com fator de calibração
-  float weight = -((float)(raw - offset)) / scale_factor;
+  float weight = ((float)(raw - offset)) / scale_factor;
+
   return weight;
 }
