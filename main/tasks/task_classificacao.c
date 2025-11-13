@@ -6,8 +6,8 @@
 static const char *TAG = "TaskClassificacao";
 
 static const ClassificacaoLimites limites = {
-    .limite_inferior = 300.0f,
-    .limite_superior = 500.0f,
+    .limite_inferior = 20.0f,
+    .limite_superior = 100.0f,
 };
 
 void task_classificacao(void *pvParameters)
