@@ -15,9 +15,13 @@ idf_component_register(
     "."
     "drivers"
   REQUIRES
+    wifi_app
     driver
     esp_timer
     freertos
     spiffs
+    http
+    config
     hx711
+    nvs_flash
 )

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>ESP32</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+
+<body>
+
+  <section class="current" id="current-section">
+    <div id="current-card" class="card">
+      <div class="peso" id="current-peso">--</div>
+      <div class="status" id="current-status">---</div>
+      <div class="time" id="current-time">--:--:--</div>
+    </div>
+  </section>
+
+  <section class="history">
+    <table>
+      <thead>
+        <tr>
+          <th>Data/Hora</th>
+          <th>Peso (g)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-body"></tbody>
+    </table>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+
+</html>

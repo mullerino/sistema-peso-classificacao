@@ -1,0 +1,206 @@
+:root {
+  --bg-page: #f6f8fb;
+  --bg-card: #ffffff;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+
+  --success: #16a34a;
+  --success-soft: #dcfce7;
+
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+
+  --border: #e5e7eb;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+.current .card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+
+  display: grid;
+  gap: 10px;
+  text-align: center;
+
+  border-left: 6px solid var(--accent);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.current.aprovado .card {
+  border-left-color: var(--success);
+  background: linear-gradient(to right, var(--success-soft), var(--bg-card));
+}
+
+.current.reprovado .card {
+  border-left-color: var(--danger);
+  background: linear-gradient(to right, var(--danger-soft), var(--bg-card));
+}
+
+.current .peso {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.current .status {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.current .status.aprovado {
+  color: var(--success);
+}
+
+.current .status.reprovado {
+  color: var(--danger);
+}
+
+.current .time {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.current .card {
+  animation: pulse 0.2s ease-in-out;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.history table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.history thead {
+  background: #f1f5f9;
+}
+
+.history th {
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.history td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.history tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.history tbody tr.highlight {
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.status-badge.aprovado {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.status-badge.reprovado {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.history tbody {
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.history thead,
+.history tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .current .peso {
+    font-size: 42px;
+  }
+
+  .history th,
+  .history td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
